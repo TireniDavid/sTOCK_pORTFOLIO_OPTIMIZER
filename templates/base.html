@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      /* Navbar Container */
+      .navbar-container {
+        width: 100%;
+        height: 60px;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+      }
+      .navbar {
+          background: #0a192f;
+          width: calc(100% - 20px);
+          padding: 0rem 12rem 0rem 1rem;  /* top, right, bottom, left */
+          display: flex;
+          align-items: center;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+          height: 100%;
+          font-family: 'Inter', sans-serif;    
+      }
+      /* Unified Navigation Bar */
+      .nav-links-container {
+          padding: 0rem 0rem 0rem 0rem;  /* top, right, bottom, left */
+          display: flex; 
+          width: 80%;
+          height: 100%;
+          align-items: center;
+          justify-content: center;   
+      }
+      .nav-links {
+          display: flex;
+          height: 39px;
+          border: 1px solid rgba(100, 255, 218, 0.15);
+          border-radius: 10px;
+          background: rgba(100, 255, 218, 0.05);
+          align-items: center;
+          justify-content: center; 
+      }
+  
+      .navbar a {
+          color: #ccd6f6;
+          text-decoration: none;
+          font-size: 0.95rem;
+          font-weight: 500;
+          padding: 18px 24px;
+          white-space: nowrap;
+          position: relative;
+          flex: 1;
+          text-align: center;
+          transition: all 0.3s ease;
+      }
+  
+      /* Segment Divider */
+      .navbar a:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          height: 60%;
+          width: 1px;
+          background: rgba(100, 255, 218, 0.2);
+      }
+  
+      /* Hover Effects */
+      .navbar a:hover {
+          background: rgba(100, 255, 218, 0.1);
+      }
+  
+      /* Active State */
+      .navbar a.active {
+          background: linear-gradient(180deg, rgba(100, 255, 218, 0.2), transparent);
+          color: #64ffda;
+          font-weight: 600;
+      }
+  
+      /* Brand Logo Adjustments */
+      .navbar-brand {
+          color: #64ffda;
+          font-size: 1.4rem;
+          font-weight: 700;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 0 1rem;
+          width: 20%;
+      }
+  
+      /* Mobile Responsiveness */
+      @media (max-width: 768px) {
+          .navbar {
+              flex-direction: column;
+              padding: 1rem;
+              min-height: auto;
+          }
+          
+          .nav-links-container {
+              margin-left: 0;
+              width: 100%;
+              overflow-x: auto;
+          }
+          
+          .nav-links {
+              min-width: max-content;
+          }
+          
+          .navbar a {
+              padding: 12px 18px;
+              font-size: 0.9rem;
+          }
+          
+          .navbar-brand {
+              margin-bottom: 1rem;
+          }
+      }
+    </style>
+    <!-- Load Tailwind from generated CSS -->
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    
+    {% block head %}{% endblock %}
+    <title>{% block title %}Custom Website{% endblock %}</title>
+  </head>
+  <body>
+    <div class="navbar-container">
+      <div class="navbar">
+        <a href="{% url 'home' %}" class="navbar-brand">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="fill: #64ffda;">
+              <path d="M12 0L24 12L12 24L0 12L12 0Z" fill-opacity="0.8"/>
+              <path d="M12 3L21 12L12 21L3 12L12 3Z" fill-opacity="0.6"/>
+              <path d="M12 6L18 12L12 18L6 12L12 6Z" fill-opacity="0.4"/>
+          </svg>
+          Trading Pro®
+        </a>
+
+        <div class="nav-links-container">
+          <div class="nav-links">
+            <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a>
+            <a href="{% url 'watchlist' %}" class="{% if request.path == '/watchlist/' %}active{% endif %}">Watchlist</a>
+            <a href="{% url 'portfolio' %}" class="{% if request.path == '/portfolio/' %}active{% endif %}">Portfolio</a>
+            <a href="{% url 'strategies' %}" class="{% if request.path == '/strategies/' %}active{% endif %}">Strategies</a>
+            <a href="{% url 'backtest' %}" class="{% if request.path == '/backtest/' %}active{% endif %}">Backtest</a>
+            <a href="{% url 'pro_scan' %}" class="{% if request.path == '/pro_scan/' %}active{% endif %}">Pro Scan</a>
+            <a href="{% url 'settings' %}" class="{% if request.path == '/settings/' %}active{% endif %}">Settings</a>
+            <a href="{% url 'help' %}" class="{% if request.path == '/help/' %}active{% endif %}">Help</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% block content %}{% endblock %}
+  </body>
+</html>

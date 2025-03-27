@@ -1,0 +1,507 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    {{ block.super }}
+    <style>
+        .content {
+            padding-top: 60px; 
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background-color: #e5e5e5;
+            
+            
+        }
+
+        .top-main-content {
+            display: flex;
+        }
+
+        .top-main-left, .top-main-right {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #e5e5e5;
+            margin-bottom: 20px;
+            justify-content: center; /* Ensures content is centered */
+        }
+        
+        /* Left Section */
+        .top-main-left {
+            width: 20%; 
+            margin-right: 2%; 
+            justify-content: flex-start; /* Aligns content to the left */
+        }
+        
+        /* Right Section */
+        .top-main-right {
+            width: 78%;
+            gap: 10px; 
+            display: flex; 
+
+        }
+
+        /* General Input Group Styling */
+        .input-group-top-left {
+            justify-content: center;
+            display: flex;
+            gap: 1px;
+            align-items: center;
+            width: 100%;
+        }
+        
+        /* Left Section Input Group */
+        .input-group-top-left label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            width: 20%;
+        }
+        
+        .input-group-top-left input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 30%; 
+        }
+        
+        /* Right Section Input Group */
+        .input-group-top-right label {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .input-group-top-right input {
+            padding: 10px; /* Slightly larger padding for visual hierarchy */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 200px; /* Expands to fill the available space */
+        }
+        
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .button-group button {
+            padding: 10px 20px;
+            background-color: #15618a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-group button:hover {
+            background-color: #0d4e6a;
+        }
+        
+        .main-content-container {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            background-color: #f9f9f9;
+            overflow: hidden; /* Prevent full container from scrolling */
+        }
+
+        .side-main-content {
+            width: 20%;
+            height: 100vh; /* Ensure it takes full viewport height */
+            overflow-y: auto;
+            background-color: #e5e5e5;
+        
+            /* Centering items */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        
+            /* padding top right bottom left  */
+            padding: 10px 0px 20px 0px;
+            box-sizing: border-box;
+        }
+
+
+
+        .center-main-content {
+            height: 100vh;
+            width: 80%; /* Takes remaining space after side content */
+            padding: 20px;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            overflow-y: auto;
+        } 
+
+        .option-panel-container {
+            /* Centering items */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 250px;
+            background-color: #e5e5e5;
+        }
+        .options-panel {
+            height: auto;
+            width: 250px;
+            padding-bottom: 64px;
+            
+        }
+        
+        .options-heading {
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .options-list {
+            width: 250px;
+            border-collapse: collapse;
+            background-color: rgb(255, 255, 255);
+        }
+        
+        /* Style for table cells */
+        .options-list td {
+            border: 1px solid #ddd; 
+            text-align: center;  
+            
+        }
+        .clickable {
+            all: unset; /* Removes button's default styling */
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: transparent;
+            cursor: pointer;
+        }
+        .clickable:hover {
+            background-color: skyblue; /* Change to sky blue on hover */
+            color: white;
+        }
+        .active {
+            background-color: #187ed9;
+            color: white;
+        }
+
+
+        /* Graph Widget Section */
+        .graph-widget-container {
+            width: 100%;
+            height: 60vh; /* Ensures the container takes up 60% of the viewport height */
+            max-width: 100%;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden; /* Prevents overflow when the graph resizes */
+        }
+        
+        /* Placeholder where the graph will be rendered */
+        .graph-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Adds padding around the graph */
+        }
+        
+        /* Ensure chart fits well inside the container */
+        #chart {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Optional: Add media query for smaller screens */
+        @media (max-width: 768px) {
+            .graph-widget-container {
+                height: 50vh; /* Reduce height for smaller screens */
+            }
+        
+            #chart {
+                width: 90%; /* Limit width to 90% on smaller screens */
+                height: 90%; /* Limit height to 90% on smaller screens */
+            }
+        }  
+    </style>
+{% endblock %}
+
+{% block title %}Backtest | Trading Pro{% endblock %}
+
+{% block content %}
+<main class="content">    
+    <div class="top-main-content">
+    <!-- Top-Left Section -->
+    <div class="top-main-left">
+        <!-- Ticker Input Section -->
+        <div class="input-group-top-left">
+            <label for="ticker-input" class="ticker-label">Ticker(s)</label>
+            <input 
+                type="text" id="ticker-input" class="ticker-input" 
+                placeholder="(e.g., AAPL, TSLA)" 
+            />
+        </div>
+    </div>
+    <!-- Top-Right Section -->
+    <div class="top-main-right">
+        <div class="input-group-top-right">
+            <label for="start-date">Test Start Date</label>
+            <input type="date" id="start-date" name="start_date">
+        </div>
+        <div class="input-group-top-right">
+            <label for="end-date">Backtest End Date</label>
+            <input type="date" id="end-date" name="end_date">
+        </div>
+        <div class="button-group">
+            <button id="render-graph-button">Start Backtest</button>
+        </div>
+    </div>
+    </div>
+
+    <div class="main-content-container">  
+        <div class="side-main-content">
+            <div class="option-panel-container"> 
+                <!-- Strategy Section -->
+                <div class="options-panel">
+                    <div class="options-heading">Strategy</div>  
+                    <table class="options-list">
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Stock">Golden Cross</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Call">Fibonacci Retracement</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Put">Supply and Demand</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Covered Call">*Technical*</button></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="options-panel">
+                    <div class="options-heading">Position</div>  
+                    <table class="options-list" id="position">
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Long">Long</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Short">Short</button></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="options-panel">
+                    <div class="options-heading">Earnings Handling</div>  
+                    <table class="options-list">
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Nothing Special">Nothing Special</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Never Trade Earnings">Never Trade Earnings</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Only Trade Earnings">Only Trade Earnings</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Custom Earnings">Custom Earnings</button></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="options-panel">
+                    <div class="options-heading">Open Trade When</div>  
+                    <table class="options-list">
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="*Technical Open*">*Technical Open*</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Bull Squeeze">Bull Squeeze</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Bear Squeeze">Bear Squeeze</button></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="clickable" data-option="Pullback">Pullback</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="center-main-content">
+            <!-- Graph Widget Placeholder -->
+            <div class="graph-widget-container">
+                <div class="graph-placeholder" id="graph-container">
+                    <div id="chart"></div> <!-- No need for inline style here -->
+                    <div id="graph-error" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                        background: #ffebee; padding: 20px; border-radius: 8px; color: #b71c1c; font-weight: bold;">
+                        Ticker does not exist in database
+                    </div>
+                </div>
+            </div>
+            <div class="graph-widget-container">
+                <div class="graph-placeholder" id="graph-container">
+                    <div id="chart-strategy">Analysis</div> 
+                    <div id="graph-error" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                        background: #ffebee; padding: 20px; border-radius: 8px; color: #b71c1c; font-weight: bold;">
+                        Ticker does not exist in database
+                    </div>
+                </div>
+            </div>
+            <div class="graph-widget-container">
+                <div class="graph-placeholder" id="graph-container">
+                    <div id="chart-strategy">Analysis</div> 
+                    <div id="graph-error" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                        background: #ffebee; padding: 20px; border-radius: 8px; color: #b71c1c; font-weight: bold;">
+                        Ticker does not exist in database
+                    </div>
+                </div>
+            </div>
+            <div class="graph-widget-container">
+                <div class="graph-placeholder" id="graph-container">
+                    <div id="chart-strategy">Analysis</div> 
+                    <div id="graph-error" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                        background: #ffebee; padding: 20px; border-radius: 8px; color: #b71c1c; font-weight: bold;">
+                        Ticker does not exist in database
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</main>
+    <!-- Chart Libraries -->
+    <!-- Chart Libraries -->
+    <script src="{% static 'js/lightweight-charts.js' %}"></script> 
+   
+    <script>
+        let chart;
+        let candlestickSeries;
+            
+        window.addEventListener("load", function() {
+            // Create the chart
+            chart = LightweightCharts.createChart(document.getElementById('chart'), {
+                width: document.getElementById('chart').clientWidth,
+                height: document.getElementById('chart').clientHeight,
+                layout: {
+                    backgroundColor: '#ffffff',
+                    textColor: '#000000',
+                },
+                grid: {
+                    vertLines: {
+                        color: '#eeeeee',
+                    },
+                    horzLines: {
+                        color: '#eeeeee',
+                    },
+                },
+            });
+            // Add a Candlestick series
+            candlestickSeries = chart.addCandlestickSeries();
+            loadInitialData()
+        });
+
+        async function loadInitialData() {
+            try {
+                const response = await fetch('/fetch_stock_data/');
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+                updateChart(data.data);
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        function updateChart(rawData) {
+            const formattedData = rawData.map(item => ({
+                time: new Date(item.Date).getTime(),
+                open: item.Open,
+                high: item.High,
+                low: item.Low,
+                close: item.Close,
+            }));
+            candlestickSeries.setData(formattedData);
+        }
+            
+            
+        // Unified fetch function
+        async function fetchData() {
+            const ticker = document.getElementById('ticker-input').value.trim().toUpperCase();
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            const errorDiv = document.getElementById('graph-error');
+
+            errorDiv.style.display = 'none';
+            
+            if (!ticker) return;
+
+            try {
+                const response = await fetch(
+                    `/fetch_stock_data/?ticker=${ticker}&start_date=${startDate}&end_date=${endDate}`
+                );
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error);
+                }
+
+                const data = await response.json();
+                
+                if (data.valid) { // Add this flag to your backend response
+                    updateChart(data.data);
+                    chart.resize(document.getElementById('chart').clientWidth, 
+                                document.getElementById('chart').clientHeight);
+                } else {
+                    errorDiv.style.display = 'block';
+                }
+            }
+            
+            catch (error) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = error.message;
+            }
+        }
+
+        function debounce(func, delay=500) {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        document.getElementById('ticker-input').addEventListener('input', debounce(function(e) {
+            const ticker = e.target.value.trim().toUpperCase();
+            if (ticker.length >= 3) {  // Only fetch if input is 3+ characters
+                fetchData();
+            }
+        }));
+
+        document.getElementById('start-date').addEventListener('change', fetchData);
+        document.getElementById('end-date').addEventListener('change', fetchData);
+        document.getElementById('render-graph-button').addEventListener('click', fetchData); 
+    
+    
+    </script>
+
+    <script>  
+       document.querySelectorAll('.clickable').forEach(function(button) {
+           button.addEventListener('click', function() {
+               position_clicked = false;
+               const isInPositionGroup = this.closest('#position');
+               if (!isInPositionGroup) {
+                   this.classList.toggle('active');
+               }
+               else { 
+                   document.querySelectorAll('#position .clickable.active').forEach(function(positionButton) {
+                       positionButton.classList.remove('active');
+                   });
+                   this.classList.add('active');
+
+               }
+           });
+       });
+    </script>   
+{% endblock %}

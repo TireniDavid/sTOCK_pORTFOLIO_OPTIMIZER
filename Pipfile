@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-tailwind = "*"
+pandas = "*"
+yfinance = "*"
+backtrader = "*"
+lxml = "*"
+matplotlib = "*"
+
+[dev-packages]
+ipykernel = "*"
+ipython = "*"
+
+[requires]
+python_version = "3.13"

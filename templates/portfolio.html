@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+{% endblock %}
+
+{% block title %}Trading Pro®{% endblock %}
+
+{% block content %}
+    <div class="flex flex-col mt-[76px] space-y-8 pt-16 justify-center px-8">
+        <!-- Default Portoflio Account -->
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-medium text-gray-700">Available Balance</h3>
+              <div class="flex items-center gap-3">
+                <span class="text-2xl font-bold text-green-600">$20,000.00</span>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                  + Add Funds
+                </button>
+              </div>
+            </div>
+
+        <!-- Default Portoflio -->
+        <div class="mx-auto h-auto grid grid-cols-1 w-[50%] rounded-lg bg-white border border-gray-200 p-6 shadow-lg ">
+            <h3 class="text-xl font-medium text-black">Portfolio</h3>
+            <h3 class="text-xl font-medium text-black">Portfolio</h3>
+            <h3 class="text-xl font-medium text-black">Portfolio</h3>
+            <h3 class="text-xl font-medium text-black">Portfolio</h3>
+            <h3 class="text-xl font-medium text-black">Portfolio</h3>
+            <h3 class="text-xl font-medium text-black">Portfolio</h3>
+            <h3 class="text-xl font-medium text-black">Portfolio</h3>
+            <h3 class="text-xl font-medium text-black">Portfolio</h3>
+            <div class="p-1">
+                <h3 class="text-xl font-medium text-black">Gain/loss</h3>
+            </div>
+            <div class="p-1"></div>
+        </div>
+
+        <!-- Custom Portoflio -->
+        <div class="grid grid-cols-1 rounded-lg bg-white border border-gray-200 p-6 shadow-lg">
+            <div class="flex flex-row gap-4 p-4 md:items-center">
+              <h2 class="text-2xl font-semibold text-gray-800">Portfolio</h2>
+              <div class="flex flex-wrap gap-4">
+                <button class="flex-1 px-6 py-3 text-sm font-medium bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200 min-w-[120px]">
+                  ADD EMPTY
+                </button>
+                
+                <div class="relative group"> <!-- Dropdown container -->
+                    <button class="flex-1 w-48 px-6 py-3 text-sm font-medium bg-orange-500 text-white rounded-md shadow-md hover:bg-orange-600 transition-colors duration-200 min-w-[120px]">
+                    ADD PRESET
+                    </button>
+
+                    <!-- Dropdown menu -->
+                    <div class="absolute hidden group-hover:block w-48 bg-white border rounded-md shadow-lg border-gray-200">
+                        <div class="p-2">
+                            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                                Permanent Portfolio
+                            </button>
+                            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                                S&amp;P 500
+                            </button>
+                            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                                Three Fund Portfolio
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative group"> <!-- Dropdown container -->
+                    <button class="flex-1 w-48 px-6 py-3 text-sm font-medium bg-purple-500 text-white rounded-md shadow-md hover:bg-orange-600 transition-colors duration-200 min-w-[120px]">
+                        ADD SAVED
+                        </button>
+
+                    <!-- Dropdown menu -->
+                    <div class="absolute hidden group-hover:block w-48 bg-white border rounded-md shadow-lg border-gray-200">
+                        <div class="p-2">
+                            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                                S&amp;P 500
+                            </button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 rounded-lg bg-white border border-gray-200 p-6 shadow-lg ">
+            <div class="p-1">
+                <h3 class="text-xl font-medium text-black">Portfolio</h3>
+            </div>
+            <div class="p-1"></div>
+        </div>
+    </div>
+    <div class="bg-red-500 p-4 text-white">Tailwind Test</div>
+{% endblock %}
