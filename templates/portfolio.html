@@ -41,7 +41,7 @@
             <div class="flex flex-row gap-4 p-4 md:items-center">
               <h2 class="text-2xl font-semibold text-gray-800">Portfolio</h2>
               <div class="flex flex-wrap gap-4">
-                <button class="flex-1 px-6 py-3 text-sm font-medium bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200 min-w-[120px]">
+                <button id="add-empty-btn" class="flex-1 px-6 py-3 text-sm font-medium bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200 min-w-[120px]">
                   ADD EMPTY
                 </button>
                 
@@ -90,5 +90,31 @@
             <div class="p-1"></div>
         </div>
     </div>
-    <div class="bg-red-500 p-4 text-white">Tailwind Test</div>
+
+
+
+
+   <!-- Hidden Portfolio Form that appears after clicking 'ADD EMPTY' -->
+   <div id="portfolio-form-container" class="grid grid-cols-1 rounded-lg p-6 hidden">
+    <h3 class="text-xl">Create New Portfolio</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="flex-1 px-6 py-3 text-sm font-medium bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200 min-w-[120px]">
+            Submit
+          </button>
+              </form>
+</div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('add-empty-btn').addEventListener('click', function() {
+            document.getElementById('portfolio-form-container').classList.toggle('hidden');
+        });
+    });
+    
+</script>
+
 {% endblock %}

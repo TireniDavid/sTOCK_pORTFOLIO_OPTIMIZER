@@ -4,6 +4,8 @@ from .forms import CustomLoginForm
 from .utils import download_n_clean_data
 from django.http import JsonResponse
 from .models import Stock, Stock_Group
+from .forms import PortfolioForm  
+
 # Create your views here.
 
 class CustomLoginView(LoginView):
@@ -18,7 +20,15 @@ def watchlist(request):
     return render(request, 'watchlist.html', {'range_list': range_list})
 
 def portfolio(request):
-    return render(request, 'portfolio.html')
+    if request.method == "POST":
+        form = PortfolioForm(request.POST)
+        if form.is_valid():
+            
+            return render(request, 'portfolio.html', {'form': form})
+    else:
+        form = PortfolioForm()  
+    
+    return render(request, 'portfolio.html', {'form': form})
 
 def strategies(request):
     return render(request, 'strategies.html')
