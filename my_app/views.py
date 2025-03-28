@@ -5,6 +5,7 @@ from .utils import download_n_clean_data
 from django.http import JsonResponse
 from .models import Stock, Stock_Group
 from .forms import PortfolioForm  
+import json
 
 # Create your views here.
 
@@ -21,14 +22,19 @@ def watchlist(request):
 
 def portfolio(request):
     if request.method == "POST":
-        form = PortfolioForm(request.POST)
-        if form.is_valid():
-            
-            return render(request, 'portfolio.html', {'form': form})
+        if form.isvalid():
+            form = PortfolioForm(request.POST)
+            return 'success_page'
     else:
         form = PortfolioForm()  
     
-    return render(request, 'portfolio.html', {'form': form})
+    chart_data = {
+        "labels": ["Tech", "Commodity", "HealthCare", "Industrial", "Energy"],
+        "series": [15, 20, 20, 15, 30]
+    }
+
+    return render(request, 'portfolio.html', {'form': form, 'chart_data': json.dumps(chart_data)})
+
 
 def strategies(request):
     return render(request, 'strategies.html')

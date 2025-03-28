@@ -3,6 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+<script src="{% static 'js/apexcharts.min.js' %}"></script>
 {% endblock %}
 
 {% block title %}Trading Pro®{% endblock %}
@@ -10,111 +11,183 @@
 {% block content %}
     <div class="flex flex-col mt-[76px] space-y-8 pt-16 justify-center px-8">
         <!-- Default Portoflio Account -->
-            <div class="flex items-center justify-between">
-              <h3 class="text-lg font-medium text-gray-700">Available Balance</h3>
-              <div class="flex items-center gap-3">
-                <span class="text-2xl font-bold text-green-600">$20,000.00</span>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                  + Add Funds
-                </button>
-              </div>
+        <div class="flex items-center justify-between">
+            <h3 class="text-lg font-medium text-gray-700">Available Balance</h3>
+            <div class="flex items-center gap-3">
+            <span class="text-2xl font-bold text-green-600">$20,000.00</span>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                + Add Funds
+            </button>
             </div>
-
-        <!-- Default Portoflio -->
-        <div class="mx-auto h-auto grid grid-cols-1 w-[50%] rounded-lg bg-white border border-gray-200 p-6 shadow-lg ">
-            <h3 class="text-xl font-medium text-black">Portfolio</h3>
-            <h3 class="text-xl font-medium text-black">Portfolio</h3>
-            <h3 class="text-xl font-medium text-black">Portfolio</h3>
-            <h3 class="text-xl font-medium text-black">Portfolio</h3>
-            <h3 class="text-xl font-medium text-black">Portfolio</h3>
-            <h3 class="text-xl font-medium text-black">Portfolio</h3>
-            <h3 class="text-xl font-medium text-black">Portfolio</h3>
-            <h3 class="text-xl font-medium text-black">Portfolio</h3>
-            <div class="p-1">
-                <h3 class="text-xl font-medium text-black">Gain/loss</h3>
-            </div>
-            <div class="p-1"></div>
         </div>
+
+        <div class="flex flex-row mx-auto w-[35%] rounded-lg p-4 border border-[#e2e8f0] overflow-x-auto space-x-6 flex-nowrap">
+            <!-- Slide-in Default Portfolio Panel-->
+            <div class="relative w-[500px] rounded-lg bg-[#f8fafc] border border-[#e2e8f0] px-6 pb-6 pt-10 shadow-lg space-y-6 flex-shrink-0">
+                <!-- Default Portfolio Comment -->
+                <div class="absolute top-2 right-4 text-xs text-[#0a192f]">*default portfolio</div>
+
+                <!-- Name Section -->
+                <div class="border border-[#cbd5e1] p-4 flex items-center w-[50%] mx-auto justify-center">
+                    <h3 class="text-xl font-medium text-[#0a192f]">SnP500</h3>
+                </div>
+
+                <!-- Shares Section -->
+                <div class="border border-[#cbd5e1] p-4 flex flex-row items-center space-x-4">
+                    <div class="text-xl font-medium text-[#0a192f] bg-[#f1f5f9] p-2 rounded-md w-1/2">Shares</div>
+                    <div class="text-xl font-medium text-[#0a192f] bg-[#f1f5f9] p-2 rounded-md w-1/2 text-right">100%</div>
+                </div>
+
+                <!-- Total Return Section -->
+                <div class="border border-[#cbd5e1] p-4 flex flex-row items-center space-x-4">
+                    <div class="text-xl font-medium text-[#0a192f] bg-[#f1f5f9] p-2 rounded-md w-1/2">Total Return</div>
+                    <div class="text-xl font-medium text-[#0a192f] bg-[#f1f5f9] p-2 rounded-md w-1/2 text-right">$0</div>
+                </div>
+
+                <!-- Price per Share Section -->
+                <div class="border border-[#cbd5e1] p-4 flex flex-row items-center space-x-4">
+                    <div class="text-xl font-medium text-[#0a192f] bg-[#f1f5f9] p-2 rounded-md w-1/2">Price per Share</div>
+                    <div class="text-xl font-medium text-[#0a192f] bg-[#f1f5f9] p-2 rounded-md w-1/2 text-right">$200.00</div>
+                </div>
+            </div>  
+    
+            <!-- Slide-in Piechart Panel -->
+            <div id ="chart" class="mx-auto rounded-lg w-[500px] bg-[#0a192f] p-6 shadow-xl flex-shrink-0"></div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var chartData = JSON.parse('{{ chart_data|safe }}');
+            
+                        var options = {
+                            chart: {
+                                type: 'pie',
+                                height: 350
+                            },
+                            series: chartData.series, 
+                            labels: chartData.labels,
+
+                            tooltip: {
+                                y: {
+                                    formatter: function (val) {
+                                        return val + "%"; 
+                                    }
+                                }
+                            }
+                        };
+                        var charts = new ApexCharts(document.querySelector("#chart"), options);
+                        charts.render();
+                    });  
+                </script>
+            </div>
+        </div>
+     
 
         <!-- Custom Portoflio -->
-        <div class="grid grid-cols-1 rounded-lg bg-white border border-gray-200 p-6 shadow-lg">
-            <div class="flex flex-row gap-4 p-4 md:items-center">
-              <h2 class="text-2xl font-semibold text-gray-800">Portfolio</h2>
-              <div class="flex flex-wrap gap-4">
-                <button id="add-empty-btn" class="flex-1 px-6 py-3 text-sm font-medium bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200 min-w-[120px]">
-                  ADD EMPTY
-                </button>
-                
-                <div class="relative group"> <!-- Dropdown container -->
-                    <button class="flex-1 w-48 px-6 py-3 text-sm font-medium bg-orange-500 text-white rounded-md shadow-md hover:bg-orange-600 transition-colors duration-200 min-w-[120px]">
-                    ADD PRESET
+        <div id="custom-portfolio-container" class="grid grid-cols-1 mx-auto w-[85%] rounded-lg bg-white border border-gray-200 p-6 shadow-lg">
+            <div class="flex flex-row gap-4 p-4 md:items-center z-50">
+                <h2 class="text-2xl font-semibold text-gray-800">Portfolio</h2>
+                <div class="flex flex-wrap gap-4">
+                    
+                    <button id="add-empty-btn" class="flex-1 px-6 py-3 text-sm font-medium bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200 min-w-[120px]">
+                    ADD EMPTY
                     </button>
-
-                    <!-- Dropdown menu -->
-                    <div class="absolute hidden group-hover:block w-48 bg-white border rounded-md shadow-lg border-gray-200">
-                        <div class="p-2">
-                            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
-                                Permanent Portfolio
-                            </button>
-                            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
-                                S&amp;P 500
-                            </button>
-                            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
-                                Three Fund Portfolio
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative group"> <!-- Dropdown container -->
-                    <button class="flex-1 w-48 px-6 py-3 text-sm font-medium bg-purple-500 text-white rounded-md shadow-md hover:bg-orange-600 transition-colors duration-200 min-w-[120px]">
-                        ADD SAVED
+                    
+                    <div class="relative group"> <!-- Dropdown container -->
+                        <button class="flex-1 w-48 px-6 py-3 text-sm font-medium bg-orange-500 text-white rounded-md shadow-md hover:bg-orange-600 transition-colors duration-200 min-w-[120px]">
+                        ADD PRESET
                         </button>
 
-                    <!-- Dropdown menu -->
-                    <div class="absolute hidden group-hover:block w-48 bg-white border rounded-md shadow-lg border-gray-200">
-                        <div class="p-2">
-                            <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
-                                S&amp;P 500
-                            </button>
+                        <!-- Dropdown menu -->
+                        <div class="absolute hidden group-hover:block w-48 bg-white border rounded-md shadow-lg border-gray-200">
+                            <div class="p-2">
+                                <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                                    Permanent Portfolio
+                                </button>
+                                <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                                    S&amp;P 500
+                                </button>
+                                <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                                    Three Fund Portfolio
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                    <div class="relative group"> <!-- Dropdown container -->
+                        <button class="flex-1 w-48 px-6 py-3 text-sm font-medium bg-purple-500 text-white rounded-md shadow-md hover:bg-orange-600 transition-colors duration-200 min-w-[120px]">
+                            ADD SAVED
+                            </button>
 
-          <div class="grid grid-cols-1 rounded-lg bg-white border border-gray-200 p-6 shadow-lg ">
-            <div class="p-1">
-                <h3 class="text-xl font-medium text-black">Portfolio</h3>
+                        <!-- Dropdown menu -->
+                        <div class="absolute hidden group-hover:block w-48 bg-white border rounded-md shadow-lg border-gray-200">
+                            <div class="p-2">
+                                <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-100">
+                                    S&amp;P 500
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="p-1"></div>
+
+            <div id="portfolio-form-containers" class="flex flex-wrap gap-6 p-4">
+
+                <!-- Hidden Portfolio Form that appears after clicking 'ADD EMPTY' -->
+                <div id="portfolio-form" class="grid grid-cols-1 p-6 hidden border shadow-lg w-[450px] flex-shrink-0 relative">
+                    <!-- buttons -->
+                    <div class="absolute top-0 left-0">
+                        <button class="bg-[#0a192f] text-white shadow-md p-1">save</button>
+                        <button class="bg-[#0a192f] text-white shadow-md p-1">clone</button>
+                        <button class="bg-[#0a192f] text-white shadow-md p-1">remove</button>
+                    </div>
+
+                    <!-- set as default checkbox -->
+                    <div class="flex absolute top-0 right-0 items-center space-x-3 p-1 bg-[#0a192f] border">
+                        <label class="text-white">Set as Default:</label>
+                        <input class="" type="checkbox" ></input>
+                    </div>
+                    
+
+                    <form method="POST" class="space-y-4">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        
+                    </form>
+                    
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function (){
+                    let portfolioCount = 0;
+                    const maxPortfolio = 5;
+                    const container = document.getElementById('portfolio-form-containers');
+                    const addEmptyBtn =document.getElementById('add-empty-btn');
+                    const portfolioForm = document.getElementById('portfolio-form');
+
+                    addEmptyBtn.addEventListener('click', function() {
+                        if (portfolioCount >= maxPortfolio) {
+                            alert("You cannot create more than 5 portfolios");
+                            return;
+                        }
+                        
+                        let newPortfolio = portfolioForm.cloneNode(true);
+                        newPortfolio.classList.remove("hidden");
+                        void newPortfolio.offsetHeight;
+                        container.appendChild(newPortfolio);
+                        portfolioCount++;
+                    });
+                });    
+
+            </script>
+        
         </div>
+
     </div>
 
 
 
 
-   <!-- Hidden Portfolio Form that appears after clicking 'ADD EMPTY' -->
-   <div id="portfolio-form-container" class="grid grid-cols-1 rounded-lg p-6 hidden">
-    <h3 class="text-xl">Create New Portfolio</h3>
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit" class="flex-1 px-6 py-3 text-sm font-medium bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-200 min-w-[120px]">
-            Submit
-          </button>
-              </form>
 </div>
 
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('add-empty-btn').addEventListener('click', function() {
-            document.getElementById('portfolio-form-container').classList.toggle('hidden');
-        });
-    });
     
-</script>
 
 {% endblock %}
