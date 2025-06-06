@@ -4,163 +4,6 @@
 {% block head %}
     {{ block.super }}
     <style>
-        .content {
-            padding-top: 60px; 
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            background-color: #e5e5e5;
-            
-            
-        }
-
-        .top-main-content {
-            display: flex;
-        }
-
-        .top-main-left, .top-main-right {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            background-color: #e5e5e5;
-            margin-bottom: 20px;
-            justify-content: center; /* Ensures content is centered */
-        }
-        
-        /* Left Section */
-        .top-main-left {
-            width: 20%; 
-            margin-right: 2%; 
-            justify-content: flex-start; /* Aligns content to the left */
-        }
-        
-        /* Right Section */
-        .top-main-right {
-            width: 78%;
-            gap: 10px; 
-            display: flex; 
-
-        }
-
-        /* General Input Group Styling */
-        .input-group-top-left {
-            justify-content: center;
-            display: flex;
-            gap: 1px;
-            align-items: center;
-            width: 100%;
-        }
-        
-        /* Left Section Input Group */
-        .input-group-top-left label {
-            font-size: 14px;
-            margin-bottom: 5px;
-            width: 20%;
-        }
-        
-        .input-group-top-left input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 30%; 
-        }
-        
-        /* Right Section Input Group */
-        .input-group-top-right label {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-        
-        .input-group-top-right input {
-            padding: 10px; /* Slightly larger padding for visual hierarchy */
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 200px; /* Expands to fill the available space */
-        }
-        
-        .button-group {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .button-group button {
-            padding: 10px 20px;
-            background-color: #15618a;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .button-group button:hover {
-            background-color: #0d4e6a;
-        }
-        
-        .main-content-container {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            background-color: #f9f9f9;
-            overflow: hidden; /* Prevent full container from scrolling */
-        }
-
-        .side-main-content {
-            width: 20%;
-            height: 100vh; /* Ensure it takes full viewport height */
-            overflow-y: auto;
-            background-color: #e5e5e5;
-        
-            /* Centering items */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-        
-            /* padding top right bottom left  */
-            padding: 10px 0px 20px 0px;
-            box-sizing: border-box;
-        }
-
-
-
-        .center-main-content {
-            height: 100vh;
-            width: 80%; /* Takes remaining space after side content */
-            padding: 20px;
-            background-color: #ffffff;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            overflow-y: auto;
-        } 
-
-        .option-panel-container {
-            /* Centering items */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 250px;
-            background-color: #e5e5e5;
-        }
-        .options-panel {
-            height: auto;
-            width: 250px;
-            padding-bottom: 64px;
-            
-        }
-        
-        .options-heading {
-            font-weight: bold;
-            margin-top: 10px;
-            font-size: 14px;
-            text-align: center;
-        }
-        .options-list {
-            width: 250px;
-            border-collapse: collapse;
-            background-color: rgb(255, 255, 255);
-        }
-        
         /* Style for table cells */
         .options-list td {
             border: 1px solid #ddd; 
@@ -185,31 +28,6 @@
         }
 
 
-        /* Graph Widget Section */
-        .graph-widget-container {
-            width: 100%;
-            height: 60vh; /* Ensures the container takes up 60% of the viewport height */
-            max-width: 100%;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden; /* Prevents overflow when the graph resizes */
-        }
-        
-        /* Placeholder where the graph will be rendered */
-        .graph-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Adds padding around the graph */
-        }
-        
         /* Ensure chart fits well inside the container */
         #chart {
             width: 100%;
@@ -228,47 +46,55 @@
             }
         }  
     </style>
+
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <script src="{% static 'js/indicator/indicator.js' %}"></script>
+    <script src="{% static 'js/strategy/golden_cross_sim.js' %}"></script>
+    
+    <!-- Chart Libraries -->
+    <script src="{% static 'js/lightweight-charts.js' %}"></script> 
 {% endblock %}
+
 
 {% block title %}Backtest | Trading Pro{% endblock %}
 
 {% block content %}
-<main class="content">    
-    <div class="top-main-content">
-    <!-- Top-Left Section -->
-    <div class="top-main-left">
-        <!-- Ticker Input Section -->
-        <div class="input-group-top-left">
-            <label for="ticker-input" class="ticker-label">Ticker(s)</label>
-            <input 
-                type="text" id="ticker-input" class="ticker-input" 
-                placeholder="(e.g., AAPL, TSLA)" 
-            />
+<main class="pt-[60px] w-full min-h-screen bg-[#e5e5e5]">    
+    <div class="flex">
+        <!-- Top-Left Section -->
+        <div class="flex items-center p-5 bg-[#e5e5e5] mb-5 w-[20%] mr-[2%] justify-start">
+            <!-- Ticker Input Section -->
+            <div class="flex justify-center gap-[1px] items-center w-full">
+                <label for="ticker-input" class="text-[14px] mb-[5px] w-[20%]">Ticker(s)</label>
+                <input 
+                    type="text" id="ticker-input" class="p-2 border border-gray-300 rounded-md w-[30%]" 
+                    placeholder="(e.g., AAPL, TSLA)" 
+                />
+            </div>
         </div>
-    </div>
-    <!-- Top-Right Section -->
-    <div class="top-main-right">
-        <div class="input-group-top-right">
-            <label for="start-date">Test Start Date</label>
-            <input type="date" id="start-date" name="start_date">
+        <!-- Top-Right Section -->
+        <div class="flex items-center p-5 bg-[#e5e5e5] mb-5 w-[78%] gap-[10px] justify-center">
+            <div>
+                <label class="text-[14px] mb-[5px]" for="start-date">Test Start Date</label>
+                <input class="p-2.5 border border-gray-300 rounded-md w-[200px]" type="date" id="start-date" name="start_date">
+            </div>
+            <div>
+                <label class="text-[14px] mb-[5px]" for="end-date">Backtest End Date</label>
+                <input class="p-2.5 border border-gray-300 rounded-md w-[200px]" type="date" id="end-date" name="end_date">
+            </div>
+            <div class="flex flex-col justify-center items-center">
+                <button class="px-5 py-2.5 bg-[#15618a] text-white rounded-md cursor-pointer hover:bg-[#0d4e6a]" id="render-graph-button">Start Backtest</button>
+            </div>
         </div>
-        <div class="input-group-top-right">
-            <label for="end-date">Backtest End Date</label>
-            <input type="date" id="end-date" name="end_date">
-        </div>
-        <div class="button-group">
-            <button id="render-graph-button">Start Backtest</button>
-        </div>
-    </div>
     </div>
 
-    <div class="main-content-container">  
-        <div class="side-main-content">
-            <div class="option-panel-container"> 
+    <div class="w-full min-h-screen flex flex-row bg-[#f9f9f9] overflow-hidden">  
+        <div class="w-[20%] h-screen overflow-y-auto bg-[#e5e5e5] flex flex-col items-center pt-[10px] pb-[20px] box-border">
+            <div class="flex flex-col items-center w-[250px] bg-[#e5e5e5]"> 
                 <!-- Strategy Section -->
-                <div class="options-panel">
-                    <div class="options-heading">Strategy</div>  
-                    <table class="options-list">
+                <div class="w-[250px] pb-16">
+                    <div class="font-bold mt-[10px] text-[14px] text-center">Strategy</div>  
+                    <table class="w-[250px] border-collapse bg-white">
                         <tr>
                             <td><button type="button" class="clickable" data-option="Stock">Golden Cross</button></td>
                         </tr>
@@ -283,9 +109,9 @@
                         </tr>
                     </table>
                 </div>
-                <div class="options-panel">
-                    <div class="options-heading">Position</div>  
-                    <table class="options-list" id="position">
+                <div class="w-[250px] pb-16">
+                    <div class="font-bold mt-[10px] text-[14px] text-center">Position</div>  
+                    <table class="w-[250px] border-collapse bg-white" id="position">
                         <tr>
                             <td><button type="button" class="clickable" data-option="Long">Long</button></td>
                         </tr>
@@ -294,9 +120,9 @@
                         </tr>
                     </table>
                 </div>
-                <div class="options-panel">
-                    <div class="options-heading">Earnings Handling</div>  
-                    <table class="options-list">
+                <div class="w-[250px] pb-16">
+                    <div class="font-bold mt-[10px] text-[14px] text-center">Earnings Handling</div>  
+                    <table class="w-[250px] border-collapse bg-white">
                         <tr>
                             <td><button type="button" class="clickable" data-option="Nothing Special">Nothing Special</button></td>
                         </tr>
@@ -311,9 +137,9 @@
                         </tr>
                     </table>
                 </div>
-                <div class="options-panel">
-                    <div class="options-heading">Open Trade When</div>  
-                    <table class="options-list">
+                <div class="w-[250px] pb-16">
+                    <div class="font-bold mt-[10px] text-[14px] text-center">Open Trade When</div>  
+                    <table class="w-[250px] border-collapse bg-white">
                         <tr>
                             <td><button type="button" class="clickable" data-option="*Technical Open*">*Technical Open*</button></td>
                         </tr>
@@ -330,141 +156,215 @@
                 </div>
             </div>
         </div>
-        <div class="center-main-content">
-            <!-- Graph Widget Placeholder -->
-            <div class="graph-widget-container">
-                <div class="graph-placeholder" id="graph-container">
-                    <div id="chart"></div> <!-- No need for inline style here -->
-                    <div id="graph-error" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                        background: #ffebee; padding: 20px; border-radius: 8px; color: #b71c1c; font-weight: bold;">
-                        Ticker does not exist in database
+        <div class="h-screen w-[80%] p-5 bg-white box-border border border-gray-300 overflow-y-auto space-y-3 relative">
+            <!-- Indicator Menu & Panels -->
+            <div id="indicator-menu" class="absolute top-2 right-2 z-10">
+                <!-- Trigger Button -->
+                <button id="indicator-toggle" class="bg-white text-black border border-gray-300 rounded-md px-3 py-1 focus:outline-none">
+                   Indicators
+                </button>
+                <!-- Dropdown Container; initially hidden -->
+                <div id="indicator-options" class="hidden absolute right-0 mt-2 w-64 bg-white border border-gray-200 shadow-lg rounded-md">
+                    <button data-indicator="ma" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                       Moving Average (MA)
+                    </button>
+                    <button data-indicator="rsi" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                        Relative Strength Index (RSI)
+                    </button>
+                    <button data-indicator="bbands" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                        Bollinger Bands
+                    </button>
+                    <button data-indicator="stoch" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                        Stochastic Oscillator
+                    </button>
+                    <button data-indicator="adx" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                        Average Directional Index (ADX)
+                    </button>
+                    <button data-indicator="ichimoku" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                        Ichimoku Cloud
+                    </button>
+                    <button data-indicator="psar" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                        Parabolic SAR
+                    </button>
+                    <button data-indicator="obv" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                        On-Balance Volume (OBV)
+                    </button>
+                    <button data-indicator="cmf" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                        Chaikin Money Flow (CMF)
+                    </button>
+                    <button data-indicator="cci" class="indicator-option block w-full text-left px-3 py-2 hover:bg-gray-100">
+                        Commodity Channel Index (CCI)
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Placeholder for dynamic indicator panels (the partials) -->
+            <div id="indicator-panels" class="flex flex-wrap bottom-2 left-2 right-2 p-2 space-x-4 border w-[91%]"></div>
+
+            <!-- Placeholder for dynamic Strategy panels (the partials) -->
+            <div id="strategy-panels" class="flex flex-wrap bottom-2 left-2 right-2 p-2 space-x-4 border w-[91%]"></div>
+            
+            
+            <!-- Graph Widget Container for the chart -->
+            <div class="w-full h-[60vh] max-w-full bg-[#f0f0f0] flex justify-center items-center rounded-[10px] border border-gray-300 mt-5 relative overflow-hidden">
+                <div id="graph-container" class="w-full h-[60vh] bg-[#f0f0f0] flex justify-center items-center rounded-[10px] border border-gray-300 mt-5 relative overflow-hidden">
+                    <div id="chart" class="w-full h-full"></div>
+                    <!-- Placeholder overlay -->
+                    <div id="chart-placeholder" class="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-500 text-xl z-50">
+                        Enter ticker to display chart
+                    </div>
+                    <div id="graph-error" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-100 p-5 rounded text-red-700 font-bold">
+                      Ticker does not exist in database
                     </div>
                 </div>
             </div>
-            <div class="graph-widget-container">
-                <div class="graph-placeholder" id="graph-container">
-                    <div id="chart-strategy">Analysis</div> 
-                    <div id="graph-error" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                        background: #ffebee; padding: 20px; border-radius: 8px; color: #b71c1c; font-weight: bold;">
-                        Ticker does not exist in database
-                    </div>
+            
+            <!-- Analysis container for Golden Cross (Primary Analysis) -->
+            <div class="w-full bg-[#f0f0f0] flex flex-col justify-start items-center rounded-lg border border-gray-300 mt-5 p-4">
+                <h2 class="w-full text-center text-xl font-bold mb-3">Golden Cross Analysis for SPY</h2>
+                <div id="chart-container-2" class="w-full h-[600px] overflow-auto">
+                <div id="golden-cross-chart" class="w-full h-full"></div>
                 </div>
             </div>
-            <div class="graph-widget-container">
-                <div class="graph-placeholder" id="graph-container">
-                    <div id="chart-strategy">Analysis</div> 
-                    <div id="graph-error" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                        background: #ffebee; padding: 20px; border-radius: 8px; color: #b71c1c; font-weight: bold;">
-                        Ticker does not exist in database
-                    </div>
+            
+            <!-- Analysis container for Golden Cross (Additional Analysis 2) -->
+            <div class="w-full bg-[#f0f0f0] flex flex-col justify-start items-center rounded-lg border border-gray-300 mt-5 p-4 min-h-[200px]">
+                <h2 class="w-full text-center text-xl font-bold mb-3">Additional Analysis 2</h2>
+                <div class="w-full h-full overflow-auto">
+                <!-- Placeholder for additional analysis content -->
+                <p class="text-center text-gray-500">No data available.</p>
                 </div>
             </div>
-            <div class="graph-widget-container">
-                <div class="graph-placeholder" id="graph-container">
-                    <div id="chart-strategy">Analysis</div> 
-                    <div id="graph-error" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                        background: #ffebee; padding: 20px; border-radius: 8px; color: #b71c1c; font-weight: bold;">
-                        Ticker does not exist in database
-                    </div>
+            
+            <!-- Analysis container for Golden Cross (Additional Analysis 3) -->
+            <div class="w-full bg-[#f0f0f0] flex flex-col justify-start items-center rounded-lg border border-gray-300 mt-5 p-4 min-h-[200px]">
+                <h2 class="w-full text-center text-xl font-bold mb-3">Additional Analysis 3</h2>
+                <div class="w-full h-full overflow-auto">
+                <!-- Placeholder for additional analysis content -->
+                <p class="text-center text-gray-500">No data available.</p>
                 </div>
             </div>
         </div>
-    </div>
-    
+    </div>     
 </main>
-    <!-- Chart Libraries -->
-    <!-- Chart Libraries -->
-    <script src="{% static 'js/lightweight-charts.js' %}"></script> 
+    <!-- Include the MovingAverage Indicator Modal Partial (from your partials folder) -->
+    {% include "partials/indicators/indicator_modal_ma.html" %}
+
+    <!-- Include the Golden Cross partial from the strategy folder when needed -->
+    {% include "partials/strategies/backtest_golden_cross_form.html" %}
    
+    
+    <!-- ===== MAIN SCRIPT: Chart1, Data Fetching, and MA Logic ===== -->
     <script>
+        // ===== Global Variables =====
         let chart;
         let candlestickSeries;
-            
+        let rawChartData = [];           // Holds the current fetched data
+        let addedMAseries = [];          // Tracks dynamically added MA overlays
+        const maxMAIndicators = 5;
+        const defaultColors = ['#FF0000', '#00FF00', '#0000FF', '#FFA500', '#800080'];
+        
+        function getColorForIndicator() {
+            return defaultColors[addedMAseries.length % defaultColors.length];
+        }
+        
+        // ===== MA Indicator Manager =====
+        const MAIndicatorManager = {
+            addIndicator: function(maType, period, color) {
+                if (addedMAseries.length >= maxMAIndicators) {
+                    alert(`Maximum of ${maxMAIndicators} indicators reached.`);
+                    return null;
+                }
+                let newSeries = chart.addLineSeries({ color: color, lineWidth: 2 });
+                let indicatorData = (maType === 'sma')
+                        ? computeSMA(rawChartData, period)
+                        : computeEMA(rawChartData, period);
+                newSeries.setData(indicatorData);
+                addedMAseries.push({ series: newSeries, id: Date.now() });
+                return newSeries;
+            },
+            removeIndicator: function(seriesToRemove) {
+                seriesToRemove.setData([]);
+                addedMAseries = addedMAseries.filter(obj => obj.series !== seriesToRemove);
+            }
+        };
+        
+        // ===== Chart Initialization =====
         window.addEventListener("load", function() {
-            // Create the chart
             chart = LightweightCharts.createChart(document.getElementById('chart'), {
                 width: document.getElementById('chart').clientWidth,
                 height: document.getElementById('chart').clientHeight,
-                layout: {
-                    backgroundColor: '#ffffff',
-                    textColor: '#000000',
-                },
-                grid: {
-                    vertLines: {
-                        color: '#eeeeee',
-                    },
-                    horzLines: {
-                        color: '#eeeeee',
-                    },
-                },
+                layout: { backgroundColor: '#ffffff', textColor: '#000000' },
+                grid: { vertLines: { color: '#eeeeee' }, horzLines: { color: '#eeeeee' } }
             });
-            // Add a Candlestick series
             candlestickSeries = chart.addCandlestickSeries();
-            loadInitialData()
+            // Base MA series are created but remain empty.
+            let baseSMA50 = chart.addLineSeries({ color: '#FF0000', lineWidth: 2 });
+            baseSMA50.setData([]);
+            let baseSMA200 = chart.addLineSeries({ color: '#0000FF', lineWidth: 2 });
+            baseSMA200.setData([]);
+            
         });
-
-        async function loadInitialData() {
-            try {
-                const response = await fetch('/fetch_stock_data/');
-                const data = await response.json();
-                if (data.error) throw new Error(data.error);
-                updateChart(data.data);
-            } catch (error) {
-                alert(`Error: ${error.message}`);
-            }
-        }
-
+        
+        // ===== Data Updating =====
         function updateChart(rawData) {
-            const formattedData = rawData.map(item => ({
-                time: new Date(item.Date).getTime(),
+            // Convert each item’s date; if raw data has a "time" field, use it; otherwise, convert from "Date".
+            const formattedCandlestick = rawData.map(item => ({
+                time: item.time ? item.time : new Date(item.Date * 1000).toISOString().slice(0,10),
                 open: item.Open,
                 high: item.High,
                 low: item.Low,
-                close: item.Close,
+                close: item.Close
             }));
-            candlestickSeries.setData(formattedData);
+
+            candlestickSeries.setData(formattedCandlestick);
+            
+            // Clear any previously added MA overlays.
+            addedMAseries.forEach(obj => { obj.series.setData([]); });
+            addedMAseries = [];
+
+              // Hide the placeholder overlay since valid data is loaded.
+            document.getElementById('chart-placeholder').style.display = 'none';
+        
+            console.log("Chart updated with:", formattedCandlestick);
         }
-            
-            
-        // Unified fetch function
+        
+        // ===== fetchData() =====
         async function fetchData() {
             const ticker = document.getElementById('ticker-input').value.trim().toUpperCase();
             const startDate = document.getElementById('start-date').value;
             const endDate = document.getElementById('end-date').value;
             const errorDiv = document.getElementById('graph-error');
-
             errorDiv.style.display = 'none';
-            
-            if (!ticker) return;
-
+          
+            // Ensure all inputs are provided before making request.
+            if (!ticker || !startDate || !endDate) {
+              console.log("Ticker or dates missing");
+              return;
+            }
+          
             try {
-                const response = await fetch(
-                    `/fetch_stock_data/?ticker=${ticker}&start_date=${startDate}&end_date=${endDate}`
-                );
-
+                const response = await fetch(`/fetch_stock_data/?ticker=${ticker}&start_date=${startDate}&end_date=${endDate}`);
                 if (!response.ok) {
                     const error = await response.json();
                     throw new Error(error.error);
                 }
-
                 const data = await response.json();
-                
-                if (data.valid) { // Add this flag to your backend response
+                if (data.valid) {
+                    rawChartData = data.data;
                     updateChart(data.data);
-                    chart.resize(document.getElementById('chart').clientWidth, 
-                                document.getElementById('chart').clientHeight);
+                    chart.resize(document.getElementById('chart').clientWidth, document.getElementById('chart').clientHeight);
                 } else {
                     errorDiv.style.display = 'block';
                 }
-            }
-            
-            catch (error) {
+            } catch (error) {
                 errorDiv.style.display = 'block';
                 errorDiv.textContent = error.message;
             }
         }
-
-        function debounce(func, delay=500) {
+          
+        
+        function debounce(func, delay = 500) {
             let timeout;
             return (...args) => {
                 clearTimeout(timeout);
@@ -473,35 +373,261 @@
         }
 
         document.getElementById('ticker-input').addEventListener('input', debounce(function(e) {
-            const ticker = e.target.value.trim().toUpperCase();
-            if (ticker.length >= 3) {  // Only fetch if input is 3+ characters
-                fetchData();
-            }
-        }));
+            if (e.target.value.trim().length >= 3) { fetchData(); }
+            }));
 
         document.getElementById('start-date').addEventListener('change', fetchData);
         document.getElementById('end-date').addEventListener('change', fetchData);
-        document.getElementById('render-graph-button').addEventListener('click', fetchData); 
-    
-    
+        document.getElementById('render-graph-button').addEventListener('click', fetchData);
+        
+        // ===== MA Modal & Indicator Panel Logic =====
+        const indicatorToggle = document.getElementById('indicator-toggle');
+        const indicatorOptions = document.getElementById('indicator-options');
+        const maModal = document.getElementById('ma-modal');
+        const maCancel = document.getElementById('ma-cancel');
+        const maForm = document.getElementById('ma-form');
+        
+        indicatorToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            indicatorOptions.classList.toggle('hidden');
+        });
+        
+        document.addEventListener('click', () => { indicatorOptions.classList.add('hidden'); });
+        
+        document.querySelector('[data-indicator="ma"]').addEventListener('click', () => {
+            indicatorOptions.classList.add('hidden');
+            maModal.classList.remove('hidden');
+        });
+        
+        maCancel.addEventListener('click', () => { maModal.classList.add('hidden'); });
+        
+        maForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const maType = document.querySelector('input[name="ma_type"]:checked').value;
+            const period = parseInt(document.getElementById('ma-period').value, 10);
+            const color = document.getElementById('ma-color').value;
+            console.log("MA Form Submitted:", maType.toUpperCase(), "Period:", period, "Color:", color);
+            maModal.classList.add('hidden');
+        
+            // Create the indicator panel element.
+            const panel = document.createElement('div');
+            panel.className = "indicator-panel p-4 border border-gray-200 rounded-lg bg-white shadow-md mb-4 flex flex-col sm:flex-row sm:items-center justify-between w-full md:w-1/3";
+            panel.innerHTML = `
+                <div class="flex-1">
+                <span class="text-sm font-medium">
+                    ${maType.toUpperCase()}: Period = <span class="ma-period-value">${period}</span> | Color = <span class="ma-color-value">${color}</span>
+                </span>
+                </div>
+                <div class="flex space-x-2 mt-2 sm:mt-0">
+                <button class="apply-indicator px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">Apply</button>
+                <button class="edit-indicator px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors">Edit</button>
+                <button class="delete-indicator px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">Delete</button>
+                </div>
+                `;
+            const indicatorPanels = document.getElementById('indicator-panels');
+            indicatorPanels.appendChild(panel);
+        
+            // Delete: Remove panel and its MA overlay.
+            panel.querySelector('.delete-indicator').addEventListener('click', () => {
+                const panels = Array.from(indicatorPanels.children);
+                const index = panels.indexOf(panel);
+                if (addedMAseries[index]) {
+                MAIndicatorManager.removeIndicator(addedMAseries[index].series);
+                }
+                panel.remove();
+            });
+        
+        
+            // Edit: Reopen modal prefilled and remove current panel (and applied overlay if any).
+            panel.querySelector('.edit-indicator').addEventListener('click', () => {
+                document.getElementById('ma-period').value = panel.querySelector('.ma-period-value').innerText;
+                document.querySelector(`input[name="ma_type"][value="${maType}"]`).checked = true;
+                document.getElementById('ma-color').value = panel.querySelector('.ma-color-value').innerText;
+                maModal.classList.remove('hidden');
+                const panels = Array.from(indicatorPanels.children);
+                const index = panels.indexOf(panel);
+                if (addedMAseries[index]) {
+                MAIndicatorManager.removeIndicator(addedMAseries[index].series);
+                }
+                panel.remove();
+            });
+            
+            // Apply: Compute the MA indicator and add the overlay.
+            panel.querySelector('.apply-indicator').addEventListener('click', () => {
+                if (addedMAseries.length >= maxMAIndicators) {
+                    alert("Maximum of " + maxMAIndicators + " indicators reached.");
+                    return;
+                }
+                let newSeries = MAIndicatorManager.addIndicator(maType, period, color);
+                if (newSeries) { panel.querySelector('.apply-indicator').disabled = true; }
+            });
+        });
     </script>
+    
+    <!-- Golden Cross Modal partial and panel, strategy-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get references to the modal and form elements
+            const goldenCrossButton = document.querySelector('.clickable[data-option="Stock"]');
+            const goldenCrossModal = document.getElementById('golden-cross-modal');
+            const gcCancel = document.getElementById('gc-cancel');
+            const gcForm = document.getElementById('golden-cross-form');
+            const strategyPanels = document.getElementById('strategy-panels');
+            const analysisContainer = document.getElementById('golden-cross-chart'); // Div where simulation results are shown
+        
+            // Show modal when Golden Cross button is clicked
+            goldenCrossButton.addEventListener('click', () => {
+                goldenCrossModal.classList.remove('hidden');
+            });
+            
+            // Hide modal when Cancel is clicked
+            gcCancel.addEventListener('click', () => {
+                goldenCrossModal.classList.add('hidden');
+            });
+        
+            // Handle Golden Cross form submission
+            gcForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Retrieve form values
+                const fastSMAVal = parseInt(document.getElementById('fast-sma').value, 10);
+                const slowSMAVal = parseInt(document.getElementById('slow-sma').value, 10);
+                const orderPercentage = parseFloat(document.getElementById('order-percentage').value);
+                const startingCash = parseFloat(document.getElementById('starting-cash').value);
+                const overrideShares = document.getElementById('override-shares').value;
+                
+                // Hide the modal after submission
+                goldenCrossModal.classList.add('hidden');
+                
+                // Create strategy panel element with all provided parameters.
+                const panel = document.createElement('div');
+                panel.className = "strategy-panel p-6 border border-gray-200 rounded-lg bg-white shadow-md mb-6 flex flex-col sm:flex-row sm:items-center justify-between w-full md:w-1/3 flex-shrink-0";
+                panel.innerHTML = `
+                    <div class="flex-1">
+                        <h4 class="text-lg font-semibold text-gray-800">Golden Cross Strategy</h4>
+                        <p class="text-sm text-gray-600">
+                            Fast SMA: <span class="fast-sma-value">${fastSMAVal}</span> | 
+                            Slow SMA: <span class="slow-sma-value">${slowSMAVal}</span><br>
+                            Order %: <span class="order-percentage-value">${orderPercentage}</span>% | 
+                            Starting Cash: $<span class="starting-cash-value">${startingCash}</span><br>
+                            Override Shares: <span class="override-shares-value">${overrideShares || 'Auto'}</span>
+                        </p>
+                    </div>
+                    <div class="mt-4 sm:mt-0 flex space-x-2">
+                        <button class="edit-strategy px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors">Edit</button>
+                        <button class="delete-strategy px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">Delete</button>
+                        <!-- Apply button will run the simulation using reusable code -->
+                        <button class="apply-strategy px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">Apply</button>
+                    </div>
+                `;
+                strategyPanels.appendChild(panel);
+                
+                // Attach Delete handler to remove the panel.
+                panel.querySelector('.delete-strategy').addEventListener('click', () => {
+                    panel.remove();
+                });
+                
+                // Attach Edit handler: Reopen modal prefilled with current values, then remove the panel.
+                panel.querySelector('.edit-strategy').addEventListener('click', () => {
+                    document.getElementById('fast-sma').value = panel.querySelector('.fast-sma-value').innerText;
+                    document.getElementById('slow-sma').value = panel.querySelector('.slow-sma-value').innerText;
+                    document.getElementById('order-percentage').value = panel.querySelector('.order-percentage-value').innerText;
+                    document.getElementById('starting-cash').value = panel.querySelector('.starting-cash-value').innerText;
+                    let overrideVal = panel.querySelector('.override-shares-value').innerText;
+                    document.getElementById('override-shares').value = (overrideVal === "Auto") ? "" : overrideVal;
+                    goldenCrossModal.classList.remove('hidden');
+                    panel.remove();
+                });
+                
+                // Attach Apply handler: Run the simulation using the reusable function.
+                panel.querySelector('.apply-strategy').addEventListener('click', () => {
+                    if (!rawChartData.length) {
+                        alert("Please load a ticker and date range (and click Start Backtest) before applying a strategy.");
+                        return;
+                    }
+                    const simResult = runGoldenCrossStrategySim(
+                        rawChartData,
+                        fastSMAVal,
+                        slowSMAVal,
+                        orderPercentage,
+                        startingCash,
+                        overrideShares
+                    );
+                    analysisContainer.innerHTML = renderSignalsTable(simResult);
+                    panel.querySelector('.apply-strategy').disabled = true;
+                });
+                /*
+                * renderSignalsTable*/
+                function renderSignalsTable(simResult) {
+                    const signals = simResult.signals;
+                    const finalCash = simResult.finalCash;
+                    if (signals.length === 0) {
+                    return "<p class='text-center text-gray-500'>No signals generated.</p>";
+                    }
+                    let html = `<table class="min-w-full text-sm text-gray-700 border border-gray-300">
+                                    <thead class="bg-gray-200">
+                                        <tr>
+                                            <th class="px-2 py-1 border">Date</th>
+                                            <th class="px-2 py-1 border">Action</th>
+                                            <th class="px-2 py-1 border">Price</th>
+                                            <th class="px-2 py-1 border">Shares</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+                    signals.forEach(sig => {
+                    html += `<tr>
+                                <td class="px-2 py-1 border">${sig.date}</td>
+                                <td class="px-2 py-1 border">${sig.action}</td>
+                                <td class="px-2 py-1 border">${sig.price.toFixed(2)}</td>
+                                <td class="px-2 py-1 border">${sig.shares}</td>
+                            </tr>
+                            <tr class="bg-gray-50 text-xs text-gray-500">
+                                <td colspan="4" class="px-2 py-1 border italic">
+                                    SMA50 (prev/today): ${sig.prevFast.toFixed(4)} → ${sig.currentFast.toFixed(4)} |
+                                    SMA200 (prev/today): ${sig.prevSlow.toFixed(4)} → ${sig.currentSlow.toFixed(4)}
+                                </td>
+                            </tr>`;
+                    });
+                    html += `</tbody></table>
+                            <p class="mt-2 text-sm font-medium text-center">Final Cash: $${finalCash.toFixed(2)}</p>`;
+                    return html;
+                }
+                
+                // Expose globally
+                window.renderSignalsTable = renderSignalsTable;
+                
+                                // Do NOT immediately run the simulation here.
+                // (Remove any code that directly calls runGoldenCrossStrategySim immediately after form submission.)
+            });            
+        });
+    </script>
+    
 
+
+    <!-- ===== Clickable Button Logic ===== -->
     <script>  
-       document.querySelectorAll('.clickable').forEach(function(button) {
-           button.addEventListener('click', function() {
-               position_clicked = false;
-               const isInPositionGroup = this.closest('#position');
-               if (!isInPositionGroup) {
-                   this.classList.toggle('active');
-               }
-               else { 
-                   document.querySelectorAll('#position .clickable.active').forEach(function(positionButton) {
-                       positionButton.classList.remove('active');
-                   });
-                   this.classList.add('active');
+        document.querySelectorAll('.clickable').forEach(function(button) {
+            button.addEventListener('click', function() {
+                position_clicked = false;
+                const isInPositionGroup = this.closest('#position');
+                if (!isInPositionGroup) {
+                    this.classList.toggle('active');
+                }
+                else { 
+                    document.querySelectorAll('#position .clickable.active').forEach(function(positionButton) {
+                        positionButton.classList.remove('active');
+                    });
+                    this.classList.add('active');
+ 
+                }
+            });
+        });
+    </script> 
+      
+      
+      
 
-               }
-           });
-       });
-    </script>   
+      
+
+    
 {% endblock %}

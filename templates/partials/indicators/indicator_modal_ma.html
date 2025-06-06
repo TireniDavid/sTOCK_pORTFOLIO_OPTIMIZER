@@ -1,0 +1,44 @@
+<!-- templates/partials/indicator_modal_ma.html -->
+<div id="ma-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+  <div class="bg-white p-6 rounded-md shadow-lg w-80">
+    <h3 class="text-xl font-bold mb-4 text-center">Configure Moving Average (MA)</h3>
+    <form id="ma-form" action="#" method="post">
+      {% csrf_token %}
+      <fieldset class="mb-4">
+        <legend class="block text-sm font-medium text-gray-700 mb-1">Type</legend>
+        <div class="flex space-x-4">
+          <label class="inline-flex items-center">
+            <input type="radio" name="ma_type" value="sma" checked class="form-radio text-blue-500">
+            <span class="ml-2">Simple (SMA)</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input type="radio" name="ma_type" value="ema" class="form-radio text-blue-500">
+            <span class="ml-2">Exponential (EMA)</span>
+          </label>
+        </div>
+      </fieldset>
+      <div class="mb-4">
+        <label for="ma-period" class="block text-sm font-medium text-gray-700">Period</label>
+        <input id="ma-period" name="ma_period" type="number" value="50" min="1"
+               class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500" 
+               required>
+      </div>
+      <div class="mb-4">
+        <label for="ma-color" class="block text-sm font-medium text-gray-700">Color</label>
+        <select id="ma-color" name="ma_color" class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500">
+          <option value="#FF0000">Red</option>
+          <option value="#00FF00">Green</option>
+          <option value="#0000FF">Blue</option>
+          <option value="#FFA500">Orange</option>
+          <option value="#800080">Purple</option>
+        </select>
+      </div>
+      <div class="mt-4 flex justify-end space-x-3">
+        <button type="button" id="ma-cancel" class="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 transition-colors">Cancel</button>
+        <!-- Change label to "Submit" for the initial form submission -->
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+

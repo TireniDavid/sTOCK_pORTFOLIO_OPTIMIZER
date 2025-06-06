@@ -7,10 +7,10 @@ name = "pypi"
 django = "*"
 django-tailwind = "*"
 pandas = "*"
-yfinance = "*"
 backtrader = "*"
 lxml = "*"
 matplotlib = "*"
+yfinance = "*"
 
 [dev-packages]
 ipykernel = "*"

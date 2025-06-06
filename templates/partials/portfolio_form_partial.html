@@ -1,0 +1,29 @@
+<!-- partials/portfolio_form_partial.html -->
+
+<div class="portfolio-form grid grid-cols-1 p-6 border shadow-lg w-[450px] flex-shrink-0 relative">
+    <!-- COMMENT: action buttons with proper classes -->
+    <div class="absolute top-0 left-0 z-20">
+        <button class="clone-btn bg-[#0a192f] text-white shadow-md p-1">clone</button>
+        <button class="remove-btn bg-[#0a192f] text-white shadow-md p-1">remove</button>
+    </div>
+
+    <form method="POST" class="space-y-4 border relative z-10">
+        {% csrf_token %}
+        <input type="hidden" name="portfolio_id" value="{{ portfolio.id }}">
+        
+        {{ form.as_p }}
+
+        <!-- COMMENT: consistent custom checkbox outside of form, named correctly for backend -->
+        <div class="flex absolute top-0 right-0 items-center space-x-3 p-1 bg-[#0a192f] border z-20">
+            <label class="text-white">Set as Default:</label>
+            <input 
+                type="checkbox" 
+                name="is_default" 
+                {% if portfolio.is_default %}checked{% endif %} 
+                class="border p-1"
+            >
+        </div>
+        
+        <button type="submit" class="absolute bottom-0 right-0 bg-[#0a192f] text-white shadow-md p-1">save</button>
+    </form>
+</div>
