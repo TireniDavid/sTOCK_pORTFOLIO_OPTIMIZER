@@ -139,3 +139,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+
+# ── settings.py ────────────────────────────────────────────────────────────────
+CACHES = {
+    "default": {
+        # swap to  'django.core.cache.backends.memcached.PyLibMCCache'  or
+        # 'django_redis.cache.RedisCache' when you’re ready for prod:
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "ai‑trader‑stock‑cache",
+    }
+}
