@@ -9,8 +9,8 @@ from django.core.cache import cache
 
 # yfinance 0.2.37+: YFRateLimitError lives here; fall back to a generic error
 try:
-    from yfinance.shared._exceptions import YFRateLimitError
-except ImportError:         # old yfinance or path changed
+    from yfinance.exceptions import YFRateLimitError
+except ImportError:         # fallback if yfinance version is old or path changed
     class YFRateLimitError(Exception):  # type: ignore
         pass
 
